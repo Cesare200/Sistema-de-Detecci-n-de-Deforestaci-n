@@ -1,0 +1,25 @@
+import numpy as np
+from tensorflow.keras.preprocessing.image import load_img, img_to_array
+from tensorflow.keras.models import load_model
+
+longitud, altura = 100, 100
+modelo = 'C:\\Users\\HP\\Desktop\\ML4\\modelo\\modelo.h5'  # Ruta al modelo
+pesos = 'C:\\Users\\HP\\Desktop\\ML4\\modelo\\pesos.h5'  # Ruta a los pesos
+cnn = load_model(modelo)
+cnn.load_weights(pesos)
+
+def predict(file):
+    x = load_img(file, target_size=(longitud, altura))
+    x = img_to_array(x)
+    x = np.expand_dims(x, axis=0)
+    array = cnn.predict(x)
+    result = array[0]
+    answer = np.argmax(result)
+    if answer == 0:
+        print("Predicción: Deforestación")
+    elif answer == 1:
+        print("Predicción: Forestación")
+
+    return answer
+
+predict('C:\\Users\\HP\\Desktop\\ML4\\ML-bosques\\arboles.jpg')  # Reemplaza 'ruta_a_tu_imagen.jpg' con la ruta de la imagen que deseas clasificar
